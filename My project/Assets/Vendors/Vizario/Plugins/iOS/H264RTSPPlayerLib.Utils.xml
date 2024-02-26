@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>H264RTSPPlayerLib.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:Vizario.H264DecoderLib.Utils.RawH264FileReader">
+            <summary>
+            Reader for raw AAC packets from a file
+            </summary>
+        </member>
+        <member name="P:Vizario.H264DecoderLib.Utils.RawH264FileReader.isSane">
+            <summary>
+            Indicates that the Reader was initialized successfully.
+            </summary>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawH264FileReader.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Constructor for Reader for raw H264/H265 packets from a file
+            </summary>
+            <param name="path">Full filename to of file to read.</param>
+            <param name="useH265">File is a HEVC/H265 file (defaults to false).</param>
+            <param name="streamingassets">Indicates if to be read from StreamingAssets path (defaults to false).</param> 
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawH264FileReader.RetrieveNALU(System.Int32,System.Int32@,System.Boolean@)">
+            <summary>
+            Function to get single NALU unit from read buffer.
+            </summary>
+            <param name="index">Index of packet to retrieve.</param>
+            <param name="startDodeLen">Output parameter indicating the length of the NALU prefix.</param>
+            <param name="success">Output parameter indicating success or failure.</param>
+            <returns>A byte buffer with an ADTS header prefix.</returns>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawH264FileReader.Dispose">
+            <summary>
+            Dispose unit.
+            </summary>
+        </member>
+        <member name="T:Vizario.H264DecoderLib.Utils.RawAACFileReader">
+            <summary>
+            Reader for raw AAC packets from a file
+            </summary>
+        </member>
+        <member name="P:Vizario.H264DecoderLib.Utils.RawAACFileReader.isSane">
+            <summary>
+            Indicates that the Reader was initialized successfully.
+            </summary>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawAACFileReader.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructor for Reader for raw AAC packets from a file
+            </summary>
+            <param name="path">Full filename to of file to read.</param>
+            <param name="streamingassets">Indicates if to be read from StreamingAssets path (defaults to false).</param>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawAACFileReader.RetrieveADTS(System.Int32,System.Boolean@)">
+            <summary>
+            Function to get single ADTS package from read buffer.
+            </summary>
+            <returns>A byte buffer with an ADTS header prefix.</returns>
+            <param name="index">Index of packet to retrieve.</param>
+            <param name="success">Output parameter indicating success or failure.</param>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.RawAACFileReader.Dispose">
+            <summary>
+            Dispose unit.
+            </summary>
+        </member>
+        <member name="T:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher">
+            Author: Pim de Witte (pimdewitte.com) and contributors, https://github.com/PimDeWitte/UnityMainThreadDispatcher
+            <summary>
+            A thread-safe class which holds a queue with actions to execute on the next Update() method. It can be used to make calls to the main thread for
+            things such as UI Manipulation in Unity. It was developed for use in combination with the Firebase Unity plugin, which uses separate threads for event handling
+            </summary>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.Update">
+            <summary>
+            Update in MainLoop
+            </summary>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.Enqueue(System.Collections.IEnumerator)">
+            <summary>
+            Locks the queue and adds the IEnumerator to the queue
+            </summary>
+            <param name="action">IEnumerator function that will be executed from the main thread.</param>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.Enqueue(System.Action)">
+            <summary>
+            Locks the queue and adds the Action to the queue
+            </summary>
+            <param name="action">function that will be executed from the main thread.</param>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.EnqueueAsync(System.Action)">
+            <summary>
+            Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+            </summary>
+            <param name="action">function that will be executed from the main thread.</param>
+            <returns>A Task that can be awaited until the action completes</returns>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.Exists">
+            <summary>
+            Query the existence of singleton.
+            </summary>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnityMainThreadDispatcher.Instance">
+            <summary>
+            Retrieve instance.
+            </summary>
+        </member>
+        <member name="T:Vizario.H264DecoderLib.Utils.UnitySystemConsoleRedirector">
+            <summary>
+            Redirects writes to System.Console to Unity3D's Debug.Log.
+            </summary>
+            <author>
+            Jackson Dunstan, http://jacksondunstan.com/articles/2986
+            </author>
+        </member>
+        <member name="M:Vizario.H264DecoderLib.Utils.UnitySystemConsoleRedirector.Redirect">
+            <summary>
+            Redirects writes to System.Console to Unity3D's Debug.Log.
+            </summary>
+        </member>
+    </members>
+</doc>
