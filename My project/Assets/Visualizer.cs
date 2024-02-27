@@ -48,6 +48,7 @@ sealed class Visualizer : MonoBehaviour
         {
             if (i == _markers.Length) break;
             _markers[i++].SetAttributes(d);
+            //Debug.Log(_markers[i].transform.GetChild(0).GetComponent<Text>().text);
         }
 
         for (; i < _markers.Length; i++) _markers[i].Hide();

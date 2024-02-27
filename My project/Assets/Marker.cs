@@ -15,7 +15,7 @@ sealed class Marker : MonoBehaviour
         "Bottle", "Bus", "Car", "Cat",
         "Chair", "Cow", "Table", "Dog",
         "Horse", "Motorbike", "Person", "Plant",
-        "Sheep", "Sofa", "Train", "TV"
+
     };
 
     void Start()
