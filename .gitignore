@@ -70,3 +70,6 @@ My project/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 # Temporary auto-generated Android Assets
 My project/[Aa]ssets/[Ss]treamingAssets/aa.meta
 My project/[Aa]ssets/[Ss]treamingAssets/aa/*
+.env
+My project/Assets/Plugins/x86_64/VLC/symbols-3.0.20/libavcodec_plugin.dll.dbg
+My project/Assets/Plugins/x86_64/VLC/symbols-3.0.20/libavcodec_plugin.dll.dbg.meta
