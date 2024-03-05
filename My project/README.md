@@ -1,30 +1,65 @@
-YoloV4TinyBarracuda
-===================
+# libvlc player for Unity
+Minimalistic libvlc player to be used inside Unity. (Mainly for playing rtmp/rtsp streams)
 
-![screenshot](https://user-images.githubusercontent.com/343936/125791496-bea56f8d-7c7e-4e5e-b8b3-2fcefb45e2c9.png)
-![gif](https://user-images.githubusercontent.com/343936/125790218-5c33a411-2a8e-4bbc-bbe3-0dd143a18439.gif)
+Note that the wrapper is partial and doesn't include options that assets in the
+Asset store or https://code.videolan.org/videolan/vlc-unity/ offers.
 
-**YoloV4TinyBarracuda** is an implementation of the [YOLOv4]-tiny object detection model on the [Unity Barracuda] neural network inference library.
+### Requirements
+-Unity 2021.3.17f1+ (might work with other ones, just not tested with)
 
-[YOLOv4]: https://arxiv.org/abs/2004.10934
-[Unity Barracuda]: https://docs.unity3d.com/Packages/com.unity.barracuda@latest
+-Win64 build target
 
-System requirements
--------------------
+-libvlc 3.0.19 (win64) (again, might work with other ones)
 
-- Unity 2020.3 LTS or later
+## Getting Started
+1. Clone
 
-About the ONNX file
--------------------
+2. Download or build libvlc (https://artifacts.videolan.org/vlc/release-win64/) and copy the contents into 'Assets/Plugins/x86_64/VLC/'
 
-The pre-trained model (YOLOv4-tiny with PASCAL VOC) contained in this package was trained by [Bubbliiiing].
-Check the [yolov4-tiny-keras] repository for details.
+	The hierarchy of the 'Assets/Plugins/x86_64/VLC/' -folder should look like this:
 
-[Bubbliiiing]: https://github.com/bubbliiiing
-[yolov4-tiny-keras]: https://github.com/bubbliiiing/yolov4-tiny-keras
+		*/hrtfs
 
-This model was converted into ONNX by [PINTO0309] (Katsuya Hyodo).
-I reconverted it into a Barracuda-compatible form using [this Colab notebook].
+		*/locale
 
-[PINTO0309]: https://github.com/PINTO0309/PINTO_model_zoo
-[this Colab notebook]: https://colab.research.google.com/drive/1YjSQ0IJvKimrc5-I4QXaWJ43-nbPqKOS?usp=sharing
+		*/lua
+
+		*/plugins
+
+		*/sdk
+
+		*/skins
+
+		*axvlx.dll
+
+		*libvlc.dll
+
+		*libvlccore.dll
+
+Note! It is important to keep the libvlc's root folder named 'VLC' as in the cloned project.
+
+3. Open Scenes/SampleScene or drop a VLCPlayerMono.cs to a gameobject and set a target RawImage.
+
+Press play. (some url's will take a while to load before playing; i.e. rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov)
+
+## VLC Player Mono
+Monobehaviour component that plays a video and outputs the texture to a RawImage
+
+### Raw Image
+Render target
+
+### Url
+URL of the playable video/stream (eg. rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov)
+
+### Width / Height
+Width and height of the video to be played, configures the internal VLC-libraries to use these
+dimensions. Can be left to 0 to automatically detect the dimensions and use them instead.
+
+### Autoscale RawImage
+Automatically scales the target rawimage to the aspect ratio of the video.
+(Currently only tweaks the height to match the aspect ratio)
+
+## Acknowledgments
+
+* https://www.videolan.org/developers/vlc/doc/doxygen/html/group__libvlc.html
+
