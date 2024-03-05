@@ -6,6 +6,9 @@ from ultralytics import YOLO
 import time
 from deep_sort_realtime.deepsort_tracker import DeepSort
 import threading  # 스레드 모듈 추가
+from py_socket import func1
+import pymysql
+import os
 
 CONFIDENCE_THRESHOLD = 0.6
 GREEN = (0, 255, 0)
@@ -25,10 +28,44 @@ cap = cv2.VideoCapture(url)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-# 두 번째 코드의 소켓 통신을 처리하는 함수
-def handle_socket(url):
-    from py_socket import func1
-    func1(url)
+# 두 번째 코드의 소켓 통신 및 db저장을 처리하는 함수
+def handle_socket(url, frame):
+    check_time = datetime.datetime.now()
+    DB_HOST=os.getenv('DB_HOST')
+    DB_USERNAME=os.getenv('DB_USERNAME')
+    DB_PASSWORD=os.getenv('DB_PASSWORD')
+    DB_NAME=os.getenv('DB_NAME')
+    DB_PORT=os.getenv('DB_PORT')
+    
+    conn = pymysql.connect(host=DB_HOST,
+                             user=DB_USERNAME,
+                             password=DB_PASSWORD,
+                             database=DB_NAME,
+                             port=int(DB_PORT),
+                             cursorclass=pymysql.cursors.DictCursor)
+    
+    tmp_cursor =  conn.cursor()
+    sql_tmp = '''SELECT cctv_ID FROM cctv WHERE cctv_url_rtsp = (%s)'''
+    tmp_cursor.execute(sql_tmp,url)
+    result = tmp_cursor.fetchall()
+    
+    filename = check_time.strftime("%Y-%m-%d %H_%M_%S")+' CAM_NUM('+str(result[0]['cctv_ID'])+').jpg'
+    print(filename)
+    cv2.imwrite('./DB_Picture/'+filename,frame)
+    #cv2.imwrite('{filename}',frame)
+    
+    cursor = conn.cursor()
+    sql = '''
+        INSERT INTO cctv_db (cctv_num, time, image_link) VALUES (%s, %s, %s)
+    '''
+    cursor.execute(sql,(result[0]['cctv_ID'],check_time.strftime("%Y-%m-%d %H:%M:%S"),'./DB_Picture/'+filename))
+    conn.commit()
+    
+    tmp_cursor.close()
+    cursor.close()
+    print("asdfg")
+    exit()
+    #func1(url)
 
 # 소켓 통신을 멀티스레딩으로 처리
 socket_thread = threading.Thread(target=handle_socket, args=(url,))
@@ -53,16 +90,21 @@ while True:
         continue
     
     results = []
+    person_dectected = False
     for data in detection.boxes.data.tolist(): # data : [xmin, ymin, xmax, ymax, confidence_score, class_id]
         confidence = float(data[4])
         if confidence > CONFIDENCE_THRESHOLD and class_list[int(data[5])] == 'person':
+            person_dectected = True
             xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
             label = int(data[5])
-            socket_thread.start()
-            #cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+            
+            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
             #cv2.putText(frame, class_list[label]+' '+str(round(confidence, 3)*100) + '%', (xmin, ymin), cv2.FONT_ITALIC, 1, (255, 255, 255), 2)
             results.append([[xmin, ymin, xmax-xmin, ymax-ymin], confidence, label])
     tracks = tracker.update_tracks(results, frame=frame)
+    
+    if person_dectected == True:
+        handle_socket(url,frame)
 
     end = datetime.datetime.now()
 
