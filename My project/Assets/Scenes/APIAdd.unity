@@ -153,11 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rawImage: {fileID: 1299946020}
-  buttonUrlPairs:
-  - button: {fileID: 2078331615}
-    url: rtsp://210.99.70.120:1935/live/cctv012.stream
-  - button: {fileID: 799539745}
-    url: rtsp://210.99.70.120:1935/live/cctv011.stream
+  url: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov
   width: 1600
   height: 900
   autoscaleRawImage: 1
@@ -679,7 +675,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 661, y: 22}
+  m_AnchoredPosition: {x: 442, y: -328}
   m_SizeDelta: {x: 107.931, y: 91.0889}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &799539745
@@ -2027,8 +2023,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 707, y: 357}
-  m_SizeDelta: {x: 395.49, y: 240.9875}
+  m_AnchoredPosition: {x: 548, y: 226}
+  m_SizeDelta: {x: 701.5649, y: 590.7874}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1412436749
 GameObject:
@@ -3236,7 +3232,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -169, y: 642}
+  m_AnchoredPosition: {x: -194, y: 205}
   m_SizeDelta: {x: 100.7565, y: 87.955}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2078331615
