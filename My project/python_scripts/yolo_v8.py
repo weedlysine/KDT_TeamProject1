@@ -52,7 +52,6 @@ def handle_socket(url, frame):
     filename = check_time.strftime("%Y-%m-%d %H_%M_%S")+' CAM_NUM('+str(result[0]['cctv_ID'])+').jpg'
     print(filename)
     cv2.imwrite('./DB_Picture/'+filename,frame)
-    #cv2.imwrite('{filename}',frame)
     
     cursor = conn.cursor()
     sql = '''
@@ -64,8 +63,7 @@ def handle_socket(url, frame):
     tmp_cursor.close()
     cursor.close()
     print("asdfg")
-    exit()
-    #func1(url)
+    func1(url)
 
 # 소켓 통신을 멀티스레딩으로 처리
 socket_thread = threading.Thread(target=handle_socket, args=(url,))
@@ -99,7 +97,7 @@ while True:
             label = int(data[5])
             
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            #cv2.putText(frame, class_list[label]+' '+str(round(confidence, 3)*100) + '%', (xmin, ymin), cv2.FONT_ITALIC, 1, (255, 255, 255), 2)
+            cv2.putText(frame, class_list[label]+' '+str(round(confidence, 3)*100) + '%', (xmin, ymin), cv2.FONT_ITALIC, 1, (255, 255, 255), 2)
             results.append([[xmin, ymin, xmax-xmin, ymax-ymin], confidence, label])
     tracks = tracker.update_tracks(results, frame=frame)
     
@@ -114,7 +112,7 @@ while True:
     fps = f'FPS: {1 / total:.2f}'
     #cv2.putText(frame, fps, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
-    #cv2.imshow('frame', frame)
+    cv2.imshow('frame', frame)
     #time.sleep(0.1)
     if cv2.waitKey(1) == ord('q'):
         break

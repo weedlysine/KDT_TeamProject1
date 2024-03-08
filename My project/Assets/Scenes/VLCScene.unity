@@ -148,13 +148,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18358773}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e873b2bf0ff3584c979988c09d0a9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_rawImage: {fileID: 293815901}
-  url: 
+  url: http://210.99.70.120:1935/live/cctv007.stream/playlist.m3u8
   width: 1600
   height: 900
   autoscaleRawImage: 1
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18358773}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ddbdc94355862e4d89a497fdf480200, type: 3}
   m_Name: 
