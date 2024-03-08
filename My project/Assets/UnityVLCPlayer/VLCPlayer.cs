@@ -126,7 +126,7 @@ namespace bosqmode.libvlc
                 System.Threading.Thread.Sleep(500);
             }
 
-            if (_trackGetAttempts >= 10)
+            if (_trackGetAttempts >= 30)
             {
                 Debug.LogError("Maximum attempts of getting video track reached, maybe opening failed?");
             }

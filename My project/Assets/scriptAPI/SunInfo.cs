@@ -11,12 +11,12 @@ public class SunInfo : MonoBehaviour
     public Text sunriseText;
     public Text sunsetText;
 
-    private string serviceKey = "APP6ROxmgP6c%2Bn%2BHTQ5Run55txbWqk0yDPvRAA4dTliOR4hulYi2jeFmmebFB7WcUiZeHDtqeo1yVb1WBfZIzQ%3D%3D";
-    private string url = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo";
+
+    private string url = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo?ServiceKey=APP6ROxmgP6c%2Bn%2BHTQ5Run55txbWqk0yDPvRAA4dTliOR4hulYi2jeFmmebFB7WcUiZeHDtqeo1yVb1WBfZIzQ%3D%3D";
 
     void Start()
     {
-        string finalUrl = $"{url}?ServiceKey={serviceKey}&locdate={date}&location={location}";
+        string finalUrl = $"{url}&locdate={date}&location={location}";
         StartCoroutine(GetSunriseSunset(finalUrl));
     }
 
@@ -30,19 +30,36 @@ public class SunInfo : MonoBehaviour
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(request.downloadHandler.text);
-                XmlNodeList sunriseNodeList = xmlDoc.GetElementsByTagName("sunrise");
-                XmlNodeList sunsetNodeList = xmlDoc.GetElementsByTagName("sunset");
 
-                Debug.Log(request.downloadHandler.text);
+                Debug.Log("Response: " + request.downloadHandler.text);
 
-                string sunrise = sunriseNodeList[0].InnerText;
-                string sunset = sunsetNodeList[0].InnerText;
 
-                sunriseText.text = sunrise;
-                sunsetText.text = sunset;
+                XmlNodeList itemList = xmlDoc.SelectNodes("/response/body/items/item");
+                if (itemList.Count > 0)
+                {
+                    XmlNode sunriseNode = itemList[0].SelectSingleNode("sunrise");
+                    XmlNode sunsetNode = itemList[0].SelectSingleNode("sunset");
 
-                Debug.Log("Sunrise: " + sunrise);
-                Debug.Log("Sunset: " + sunset);
+                    if (sunriseNode != null && sunsetNode != null)
+                    {
+                        string sunrise = sunriseNode.InnerText;
+                        string sunset = sunsetNode.InnerText;
+
+                        sunriseText.text = sunrise;
+                        sunsetText.text = sunset;
+
+                        Debug.Log("Sunrise: " + sunrise);
+                        Debug.Log("Sunset: " + sunset);
+                    } 
+                    else
+                    {
+                        Debug.Log("No sunrise or sunset information found.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No item found in the response.");
+                }
             }
             else
             {
@@ -50,4 +67,7 @@ public class SunInfo : MonoBehaviour
             }
         }
     }
+
+
+
 }

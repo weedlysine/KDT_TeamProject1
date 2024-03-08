@@ -1,40 +1,53 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
+using System.Collections;
+using System.Xml;
+using UnityEngine.UI; // UI 컴포넌트를 사용하
+using TMPro;
 
 public class SunriseSunsetAPI : MonoBehaviour
 {
-    public InputField serviceKeyInput; // 서비스키 입력 필드
-    public InputField locdateInput; // 날짜 입력 필드
-    public InputField longitudeInput; // 경도 입력 필드
-    public InputField latitudeInput; // 위도 입력 필드
-    public Text resultText; // 결과 출력 텍스트
+    public TMP_Text sunriseText; // Inspector에서 할당
+    public TMP_Text sunsetText; // Inspector에서 할당
 
-    private string baseUrl = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo";
+    private string ddbaseUrl = "http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo";
 
-    public void FetchData()
+    void Start()
     {
-        string url = $"{baseUrl}?ServiceKey={serviceKeyInput.text}&locdate={locdateInput.text}&longitude={longitudeInput.text}&latitude={latitudeInput.text}&dnYn=Y";
-        StartCoroutine(GetSunriseSunsetData(url));
+        StartCoroutine(GetSunriseSunset("APP6ROxmgP6c%2Bn%2BHTQ5Run55txbWqk0yDPvRAA4dTliOR4hulYi2jeFmmebFB7WcUiZeHDtqeo1yVb1WBfZIzQ%3D%3D", "20240306", "성남"));
     }
 
-    IEnumerator GetSunriseSunsetData(string url)
+    IEnumerator GetSunriseSunset(string serviceKey, string locdate, string location)
     {
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        yield return www.SendWebRequest();
+        string url = $"{ddbaseUrl}?ServiceKey={serviceKey}&locdate={locdate}&location={WWW.EscapeURL(location)}";
 
-        if (www.result != UnityWebRequest.Result.Success)
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
-            resultText.text = "API 요청 실패: " + www.error;
-        }
-        else
-        {
-            var xmlDoc = new System.Xml.XmlDocument();
-            xmlDoc.LoadXml(www.downloadHandler.text);
-            string sunrise = xmlDoc.GetElementsByTagName("sunrise")[0].InnerText;
-            string sunset = xmlDoc.GetElementsByTagName("sunset")[0].InnerText;
-            resultText.text = $"일출시간: {sunrise}, 일몰시간: {sunset}";
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+            }
+            else
+            {
+                // XML 데이터 처리
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(webRequest.downloadHandler.text);
+                XmlNode sunriseNode = xmlDoc.SelectSingleNode("//sunrise");
+                XmlNode sunsetNode = xmlDoc.SelectSingleNode("//sunset");
+
+                // UI Text에 표시
+                if (sunriseNode != null && sunsetNode != null)
+                {
+                    sunriseText.text = "일출 시간: " + sunriseNode.InnerText.Trim();
+                    sunsetText.text = "일몰 시간: " + sunsetNode.InnerText.Trim();
+                }
+                else
+                {
+                    Debug.Log("일출 또는 일몰 정보를 찾을 수 없습니다.");
+                }
+            }
         }
     }
 }
