@@ -1,125 +1,80 @@
-using MySql.Data.MySqlClient;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Security.Cryptography;
 using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Login : MonoBehaviour
+public class LogIn : MonoBehaviour
 {
-    public static MySqlConnection SqlConn;
-
-    static string ipAddress = "127.0.0.1";
-    static string db_id = "root";
-    static string db_pw = "sdh76030339@";
-    static string db_name = "temaproject1";
-
     [SerializeField]
     TMP_InputField id_input;
     [SerializeField]
     TMP_InputField password_input;
+    [SerializeField]
+    GameObject SignUp_Tab;
 
-    string strConn = string.Format("server={0};uid={1};pwd={2};database={3};charset=utf8 ;", ipAddress, db_id, db_pw, db_name);
-
-    private void Awake()
-    {
-        try
-        {
-            SqlConn = new MySqlConnection(strConn);
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
-    }
-
-    void Start()
-    {
-        //Select TEST
-        string query = "select * from user";
-        DataSet ds = OnSelectRequest(query, "user");
-
-        Debug.Log(ds.GetXml());
-    }
-
+    TcpClient client;
+    string serverIP = "127.0.0.1";
+    string type;
+    int port = 8001;
+    bool socketReady = false;
+    byte[] receiveBuffer = new byte[1024];
+    byte[] dataLength;
+    NetworkStream stream;
+    // Start is called before the first frame update
 
     public void login()
     {
+        if (socketReady) return;
         try
         {
-            string id = id_input.text;
-            Debug.Log(id);
-            SqlConn.Open();   //DB 연결
+            client = new TcpClient(serverIP, port);
+            if (client.Connected)
+            {
+                type = "login";
+                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+                string MAC = NetworkInterface.GetAllNetworkInterfaces()
+                  .Where(nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                  .Select(nic => nic.GetPhysicalAddress().ToString()).FirstOrDefault().ToString();
+                Debug.Log((host.AddressList[1]).ToString());
+                Debug.Log(MAC);
+                string jsonData = "{\"Type\":\"" + type + "\",\"ID\":\"" + id_input.text + "\",\"password\":\"" +  password_input.text + "\",\"ip\":\"" + (host.AddressList[1]).ToString() + "\",\"MAC\":\"" + MAC + "\"}";
+                byte[] bytes = Encoding.UTF8.GetBytes(jsonData);
 
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = SqlConn;
-            cmd.CommandText = "select salt from user where ID = "+id;
+                stream = client.GetStream();
 
-            MySqlDataAdapter sd = new MySqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            sd.Fill(ds, "user");
-            Debug.Log(ds);
-            SqlConn.Close();  //DB 연결 해제
-        }
-        catch (System.Exception e)
+                dataLength = BitConverter.GetBytes(bytes.Length);
+                stream.Write(dataLength, 0, dataLength.Length);
+
+                stream.Write(bytes, 0, bytes.Length);
+                Debug.Log("Data sent: " + jsonData);
+                socketReady = true;
+
+
+                int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                string receivedData = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
+                Debug.Log("Received from server: " + receivedData);
+                if (receivedData == "true")
+                    SceneManager.LoadScene(1);
+            }
+
+        } 
+        catch (Exception e)
         {
-            Debug.Log(e.ToString());
-        }
-    }
-    //데이터 삽입,업데이트 쿼리시 사용 함수
-    public static bool OnInsertOrUpdateRequest(string str_query)
-    {
-        try
-        {
-            MySqlCommand sqlCommand = new MySqlCommand();
-            sqlCommand.Connection = SqlConn;
-            sqlCommand.CommandText = str_query;
-
-            SqlConn.Open();
-
-            sqlCommand.ExecuteNonQuery();
-
-            SqlConn.Close();
-
-            return true;
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e.ToString());
-            return false;
+            Debug.Log("On client connect exception " + e);
         }
     }
 
-    //select 조회 쿼리시 사용
-    //2번째 파라미터 table_name은 Dataset 이름을 정의하기 위함
-    public static DataSet OnSelectRequest(string p_query, string table_name)
+    public void SignUp_Button()
     {
-        try
-        {
-            SqlConn.Open();   //DB 연결
-
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.Connection = SqlConn;
-            cmd.CommandText = p_query;
-
-            MySqlDataAdapter sd = new MySqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            sd.Fill(ds, table_name);
-
-            SqlConn.Close();  //DB 연결 해제
-
-            return ds;
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e.ToString());
-            return null;
-        }
-    }
-
-    private void OnApplicationQuit()
-    {
-        SqlConn.Close();
+        SignUp_Tab.SetActive(true);
     }
 }
