@@ -58,7 +58,7 @@ namespace bosqmode.libvlc
 
         public VLCPlayer(int width, int height, string mediaUrl, bool audio)
         {
-            Debug.Log("Playing: " + mediaUrl);
+            //Debug.Log("Playing: " + mediaUrl);
             _width = width;
             _height = height;
 
