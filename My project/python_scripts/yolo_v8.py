@@ -9,6 +9,7 @@ import threading  # 스레드 모듈 추가
 from py_socket import func1
 import pymysql
 import os
+import boto3
 
 CONFIDENCE_THRESHOLD = 0.6
 GREEN = (0, 255, 0)
@@ -36,6 +37,10 @@ def handle_socket(url, frame):
     DB_PASSWORD=os.getenv('DB_PASSWORD')
     DB_NAME=os.getenv('DB_NAME')
     DB_PORT=os.getenv('DB_PORT')
+    access_key = os.getenv('ACCESS_KEY')
+    secret_key = os.getenv('SECRET_KEY')
+    bucket_name = 'cctv-dectec-db'
+    region = 'ap-northeast-2'
     
     conn = pymysql.connect(host=DB_HOST,
                              user=DB_USERNAME,
@@ -49,20 +54,28 @@ def handle_socket(url, frame):
     tmp_cursor.execute(sql_tmp,url)
     result = tmp_cursor.fetchall()
     
+    
+    s3 = boto3.client(
+        service_name="s3",
+        region_name=region, # 자신이 설정한 bucket region
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        )
     filename = check_time.strftime("%Y-%m-%d %H_%M_%S")+' CAM_NUM('+str(result[0]['cctv_ID'])+').jpg'
-    print(filename)
-    cv2.imwrite('./DB_Picture/'+filename,frame)
+    cv2.imwrite(filename,frame)
+    s3.upload_file(filename,bucket_name,'DB_Picture/'+filename)
+    os.remove(filename)
     
     cursor = conn.cursor()
     sql = '''
         INSERT INTO cctv_db (cctv_num, time, image_link) VALUES (%s, %s, %s)
     '''
-    cursor.execute(sql,(result[0]['cctv_ID'],check_time.strftime("%Y-%m-%d %H:%M:%S"),'./DB_Picture/'+filename))
+    img_url = 'https://cctv-dectec-db.s3.ap-northeast-2.amazonaws.com/DB_Picture/'
+    cursor.execute(sql,(result[0]['cctv_ID'],check_time.strftime("%Y-%m-%d %H:%M:%S"),img_url+filename))
     conn.commit()
     
     tmp_cursor.close()
     cursor.close()
-    print("asdfg")
     func1(url)
 
 # 소켓 통신을 멀티스레딩으로 처리
