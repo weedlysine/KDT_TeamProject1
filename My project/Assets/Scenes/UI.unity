@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -470, y: -250}
-  m_SizeDelta: {x: 900, y: 450}
+  m_AnchoredPosition: {x: -262, y: -176}
+  m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &119424628
 MonoBehaviour:
@@ -1598,6 +1598,7 @@ GameObject:
   - component: {fileID: 2122942494}
   - component: {fileID: 2122942493}
   - component: {fileID: 2122942495}
+  - component: {fileID: 2122942496}
   m_Layer: 0
   m_Name: CCTV
   m_TagString: Untagged
@@ -1661,3 +1662,15 @@ MonoBehaviour:
   height: 900
   autoscaleRawImage: 1
   mute: 1
+--- !u!114 &2122942496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122942492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c075e2c21b569f947b192faffc721622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
