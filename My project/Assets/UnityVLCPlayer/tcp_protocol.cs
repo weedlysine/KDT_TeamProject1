@@ -14,7 +14,7 @@ public class tcp_protocol : MonoBehaviour
     int port = 8000;
     byte[] receivedBuffer;
     StreamReader reader;
-    bool socketReady = false;
+    public bool socketReady = false;
     NetworkStream stream;
 
 
@@ -37,8 +37,8 @@ public class tcp_protocol : MonoBehaviour
                 stream.Read(receivedBuffer, 0, receivedBuffer.Length); // stream에 있던 바이트배열 내려서 새로 선언한 바이트배열에 넣기
                 string msg = Encoding.UTF8.GetString(receivedBuffer, 0, receivedBuffer.Length); // byte[] to string
                 Debug.Log(msg);
-                gameObject.GetComponent<VLCPlayerMono>().url = msg;
-                gameObject.GetComponent<VLCPlayerMono>().enabled = true;
+                //gameObject.GetComponent<VLCPlayerMono>().url = msg;
+                //gameObject.GetComponent<VLCPlayerMono>().enabled = true;
             }
         }
     }
