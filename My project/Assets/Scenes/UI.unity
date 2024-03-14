@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 119424627}
   - component: {fileID: 119424629}
   - component: {fileID: 119424628}
+  - component: {fileID: 119424630}
   m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
@@ -196,6 +197,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 119424626}
   m_CullTransparentMesh: 1
+--- !u!114 &119424630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119424626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27ecd927dc74acb409f3d7bd56de132c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &341601120
 GameObject:
   m_ObjectHideFlags: 3
@@ -1599,6 +1612,7 @@ GameObject:
   - component: {fileID: 2122942493}
   - component: {fileID: 2122942495}
   - component: {fileID: 2122942496}
+  - component: {fileID: 2122942497}
   m_Layer: 0
   m_Name: CCTV
   m_TagString: Untagged
@@ -1672,5 +1686,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c075e2c21b569f947b192faffc721622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listenPort: 8000
+  alert_tab: {fileID: 3026322686087835547, guid: 4b9613e663920a14c883741dc55bc6b8,
+    type: 3}
+  parent: {fileID: 842644986}
+--- !u!114 &2122942497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122942492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b1de55804afe649ae80fd0670ab888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -10,7 +10,6 @@ from py_socket import func1
 import pymysql
 import os
 import boto3
-import asyncio
 
 CONFIDENCE_THRESHOLD = 0.6
 coco128 = open('./coco.names', 'r')
@@ -18,7 +17,7 @@ data = coco128.read()
 class_list = data.split('\n')
 coco128.close()
 
-async_working = False
+thread_working = False
 
 model = YOLO('./yolov8n.pt')
 tracker = DeepSort(max_age=50)
@@ -30,9 +29,8 @@ cap = cv2.VideoCapture(url)
 #cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 # 두 번째 코드의 소켓 통신 및 db저장을 처리하는 함수
-async def handle_socket(url, frame):
-    global async_working
-    sync_working = True
+def handle_socket(url, frame):
+    global thread_working
     print("스레드 불러짐")
     check_time = datetime.datetime.now()
     DB_HOST=os.getenv('DB_HOST')
@@ -80,19 +78,15 @@ async def handle_socket(url, frame):
     tmp_cursor.close()
     cursor.close()
     func1(result[0]['cctv_url_hls'])
-    async_working = False
+    thread_working = False
     print('스레드 끝남')
 # 소켓 통신을 멀티스레딩으로 처리
 
     #if cv2.waitKey(1) == ord('q'):
     #    break
 
-async def test():
-    await asyncio.sleep(1)
-    print("ㅅㅄㅄㅄㅄㅄㅄㅄㅄㅄㅄㅄ")
-
-async def main():
-    global async_working
+def main():
+    global thread_working
     url = 'rtsp://210.99.70.120:1935/live/cctv007.stream'
     while True:
         ret, frame = cap.read()
@@ -134,9 +128,10 @@ async def main():
             for track in tracks:
                 person_id = track.track_id
                 if not person_id in tracked_persons:#새로운 추적대상 발생시 함수 호출
-                    if not async_working:
-                        print("작동시작")
-                        await test()
+                    if not thread_working:
+                        thread_working = True
+                        thread = threading.Thread(target=handle_socket,args=(url,frame))
+                        thread.start()
                         #async_working = True
                     else:
                         print("비동기식 작동중")
@@ -148,4 +143,4 @@ async def main():
 
     
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
