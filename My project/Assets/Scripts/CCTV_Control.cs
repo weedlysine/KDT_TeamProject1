@@ -30,7 +30,7 @@ public class CCTV_Control : MonoBehaviour
             
     }
 
-    IEnumerator cctv_change (float a)
+    public IEnumerator cctv_change (float a)
     {
         cctv_changing = true;
         cctv_list[cctv_num % cctv_list.Length].SetActive(false);
