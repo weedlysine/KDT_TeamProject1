@@ -13,8 +13,6 @@ public class DoubleClickDetector : MonoBehaviour, IPointerClickHandler
     {
         if (Time.time - lastClickTime < doubleClickDelay)
         {
-            // 더블클릭 감지됨
-            Debug.Log("Double click detected!");
             if (!wideview)
             {
                 this.GetComponent<RectTransform>().sizeDelta = new Vector2(1920, 1080);
@@ -27,8 +25,6 @@ public class DoubleClickDetector : MonoBehaviour, IPointerClickHandler
                 this.GetComponent<RectTransform>().anchoredPosition = new Vector2(-262, -176);
                 wideview = false;
             }
-                
-
         }
         else
         {
