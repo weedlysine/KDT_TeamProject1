@@ -42,7 +42,6 @@ def handle_socket(url, frame):
     secret_key = os.getenv('SECRET_KEY')
     bucket_name = 'cctv-dectec-db'
     region = 'ap-northeast-2'
-    print(1)
     conn = pymysql.connect(host=DB_HOST,
                              user=DB_USERNAME,
                              password=DB_PASSWORD,
@@ -55,7 +54,6 @@ def handle_socket(url, frame):
     tmp_cursor.execute(sql_tmp,url)
     result = tmp_cursor.fetchall()
     
-    print(2)
     s3 = boto3.client(
         service_name="s3",
         region_name=region, # 자신이 설정한 bucket region
@@ -66,7 +64,6 @@ def handle_socket(url, frame):
     cv2.imwrite(filename,frame)
     s3.upload_file(filename,bucket_name,'DB_Picture/'+filename)
     os.remove(filename)
-    print(3)
     cursor = conn.cursor()
     sql = '''
         INSERT INTO cctv_db (cctv_num, time, image_link) VALUES (%s, %s, %s)
@@ -74,16 +71,11 @@ def handle_socket(url, frame):
     img_url = 'https://cctv-dectec-db.s3.ap-northeast-2.amazonaws.com/DB_Picture/'
     cursor.execute(sql,(result[0]['cctv_ID'],check_time.strftime("%Y-%m-%d %H:%M:%S"),img_url+filename))
     conn.commit()
-    print(4)
     tmp_cursor.close()
     cursor.close()
     func1(result[0]['cctv_url_hls'])
     thread_working = False
-    print('스레드 끝남')
-# 소켓 통신을 멀티스레딩으로 처리
-
-    #if cv2.waitKey(1) == ord('q'):
-    #    break
+    print('스레드 끝남') 
 
 def main():
     global thread_working
@@ -100,7 +92,6 @@ def main():
             if class_list[int(data[5])] == 'person':
                 tmp +=1 
         if tmp == 0:
-            #cv2.imshow('frame', frame)
             continue
         
         results = []
