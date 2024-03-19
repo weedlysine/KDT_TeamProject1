@@ -97,5 +97,10 @@ namespace bosqmode.libvlc
         {
             player?.Dispose();
         }
+
+        public void playerUpdate()
+        {
+            player = new VLCPlayer(width, height, url, !mute);
+        }
     }
 }
