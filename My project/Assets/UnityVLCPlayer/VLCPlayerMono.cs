@@ -1,13 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace bosqmode.libvlc
 {
     public class VLCPlayerMono : MonoBehaviour
     {
-        [SerializeField]
-        private UnityEngine.UI.RawImage m_rawImage;
+        [System.Serializable]
+        public class ButtonUrlPair
+        {
+            public Button button;
+            public string url;
+        }
 
-        public string url = "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+        [SerializeField]
+        private RawImage m_rawImage;
+
+        [SerializeField]
+        private List<ButtonUrlPair> buttonUrlPairs;
 
         [SerializeField]
         [Min(0)]
@@ -32,6 +42,20 @@ namespace bosqmode.libvlc
 
         private void Start()
         {
+            foreach (var pair in buttonUrlPairs)
+            {
+                pair.button.onClick.AddListener(() => PlayVideo(pair.url));
+            }
+        }
+
+        public void PlayVideo(string url)
+        {
+            if (player != null) // 추가된 부분
+            {
+                player?.Dispose(); // 추가된 부분
+                tex = null; // 추가된 부분
+                m_rawImage.texture = null; // 추가된 부분
+            }
             player = new VLCPlayer(width, height, url, !mute);
         }
 
