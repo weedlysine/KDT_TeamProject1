@@ -6,7 +6,7 @@ namespace bosqmode.libvlc
 {
     public class VLCPlayerMono : MonoBehaviour
     {
-        [System.Serializable]
+        public string url;
         public class ButtonUrlPair
         {
             public Button button;
