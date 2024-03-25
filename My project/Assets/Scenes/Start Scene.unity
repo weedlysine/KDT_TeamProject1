@@ -415,8 +415,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1551724956}
-        m_TargetAssemblyTypeName: LogIn, Assembly-CSharp
+      - m_Target: {fileID: 1551724957}
+        m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: SignUp_Button
         m_Mode: 1
         m_Arguments:
@@ -2215,8 +2215,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1551724956}
-        m_TargetAssemblyTypeName: LogIn, Assembly-CSharp
+      - m_Target: {fileID: 1551724957}
+        m_TargetAssemblyTypeName: Login, Assembly-CSharp
         m_MethodName: login
         m_Mode: 1
         m_Arguments:
@@ -2856,6 +2856,7 @@ GameObject:
   - component: {fileID: 1551724954}
   - component: {fileID: 1551724953}
   - component: {fileID: 1551724952}
+  - component: {fileID: 1551724957}
   - component: {fileID: 1551724956}
   m_Layer: 5
   m_Name: Canvas
@@ -2953,6 +2954,22 @@ RectTransform:
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1551724956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551724951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f948587d77e5dac4a9781f1c7bbfd5e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene1Width: 2560
+  scene1Height: 1600
+  scene2Width: 2560
+  scene2Height: 800
+--- !u!114 &1551724957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

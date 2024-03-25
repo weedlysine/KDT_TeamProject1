@@ -27,7 +27,7 @@ public class CCTV_Control : MonoBehaviour
             if(!cctv_changing)
                 StartCoroutine(cctv_change(Input.GetAxisRaw("Horizontal")));
         }
-            
+          
     }
 
     public IEnumerator cctv_change (float a)

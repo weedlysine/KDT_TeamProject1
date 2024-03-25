@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 1267907224613581624}
   - component: {fileID: 1974783431227396712}
   - component: {fileID: 279577754304737466}
+  - component: {fileID: 2644089562870792956}
   m_Layer: 5
   m_Name: Alert
   m_TagString: Untagged
@@ -431,7 +432,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -218, y: 174}
-  m_SizeDelta: {x: 400, y: 250}
+  m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1267907224613581624
 CanvasRenderer:
@@ -511,7 +512,19 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1974783431227396712}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2644089562870792956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026322686087835547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab1ea2608812a694796c55ee8b9b9e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

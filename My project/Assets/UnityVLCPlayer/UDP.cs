@@ -26,6 +26,8 @@ public class UDP : MonoBehaviour
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         //receiveThread.IsBackground = true;
         receiveThread.Start();
+        GameObject alert_box = Instantiate(alert_tab, new Vector3(2410, -100, 0), Quaternion.identity, parent);
+        //alert_box.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
     }
 
     private void ReceiveData()
@@ -43,14 +45,12 @@ public class UDP : MonoBehaviour
                 Debug.Log("Received data: " + message);
                 MainThreadDispatcher.ExecuteOnMainThread(() =>
                 {
-                    GameObject alert_box = Instantiate(alert_tab,new Vector3(1710, 125,0),Quaternion.identity, parent);
+                    GameObject alert_box = Instantiate(alert_tab,new Vector3(1120, 100,0),Quaternion.identity, parent);
                     alert_box.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
                     alert_box.GetComponent<Button>().onClick.AddListener(() => {
                         Debug.Log("Å¬¸¯µÊ");
                         StartCoroutine(gameObject.GetComponent<CCTV_Control>().cctv_change(2));
                         Destroy(alert_box,.5f);
-                        
-                        
                         });
                 });
             }

@@ -42,10 +42,11 @@ namespace bosqmode.libvlc
 
         private void Start()
         {
-            foreach (var pair in buttonUrlPairs)
+            PlayVideo(url);
+            /*foreach (var pair in buttonUrlPairs)
             {
                 pair.button.onClick.AddListener(() => PlayVideo(pair.url));
-            }
+            }*/
         }
 
         public void PlayVideo(string url)

@@ -12,7 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LogIn : MonoBehaviour
+public class Login : MonoBehaviour
 {
     [SerializeField]
     TMP_InputField id_input;
@@ -63,7 +63,7 @@ public class LogIn : MonoBehaviour
                 string receivedData = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
                 Debug.Log("Received from server: " + receivedData);
                 if (receivedData == "true")
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene(2);
             }
 
         } 
