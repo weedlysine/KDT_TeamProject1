@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,11 +15,16 @@ public class Drag : MonoBehaviour
     private bool isRotate;
     private float mouseX;
     private float mouseY;
-    Camera Camera;
+    CinemachineVirtualCamera virtualCamera;
+
+    public GameObject[] flag = new GameObject[4];
+    CCTV_Control cctvControl;
+    public GameObject tmp;
 
     private void Start()
     {
-        Camera = this.GetComponent<Camera>();
+        virtualCamera = this.GetComponent<CinemachineVirtualCamera>();
+        cctvControl = tmp.GetComponent<CCTV_Control>();
     }
 
     private void Update()
@@ -37,6 +43,16 @@ public class Drag : MonoBehaviour
             {
                 isRotate = true;
                 Debug.Log("Clicked on the specific UI element!");
+            }
+            // 레이를 화면에서 마우스 포인터 방향으로 쏩니다.
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+
+            // 레이와 충돌한 객체를 감지합니다.
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                // 충돌한 객체의 이벤트를 처리합니다.
+                ObjectClicked(hitInfo.collider.gameObject);
             }
         }
             
@@ -60,12 +76,12 @@ public class Drag : MonoBehaviour
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") != 0)
-            Camera.fieldOfView += (20 * Input.GetAxis("Mouse ScrollWheel"));
+            virtualCamera.m_Lens.FieldOfView -= (20 * Input.GetAxis("Mouse ScrollWheel"));
 
-        if (Camera.fieldOfView < 10)
-            Camera.fieldOfView = 10;
-        else if (Camera.fieldOfView > 50)
-            Camera.fieldOfView = 50;
+        if (virtualCamera.m_Lens.FieldOfView < 10)
+            virtualCamera.m_Lens.FieldOfView = 10;
+        else if (virtualCamera.m_Lens.FieldOfView > 50)
+            virtualCamera.m_Lens.FieldOfView = 50;
     }
 
     public void Rotation()
@@ -74,5 +90,25 @@ public class Drag : MonoBehaviour
         mouseY = Mathf.Clamp(mouseY + Input.GetAxis("Mouse Y") * rotateSpeed, -limitAngle, limitAngle);
         if(mouseX !=0 && mouseY !=0)
             transform.rotation = Quaternion.Euler(35 +transform.rotation.x - mouseY, -173 +transform.rotation.y + mouseX, 0.0f);
+    }
+
+    void ObjectClicked(GameObject clickedObject)
+    {
+        if (clickedObject == flag[0])
+        {
+            StartCoroutine(cctvControl.cctv_change_tmp(1));
+        }
+        else if (clickedObject == flag[1])
+        {
+            StartCoroutine(cctvControl.cctv_change_tmp(2));
+        }
+        else if (clickedObject == flag[2])
+        {
+            StartCoroutine(cctvControl.cctv_change_tmp(3));
+        }
+        else if(clickedObject == flag[3])
+        {
+            StartCoroutine(cctvControl.cctv_change_tmp(4));
+        }
     }
 }

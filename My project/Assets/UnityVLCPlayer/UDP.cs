@@ -17,6 +17,7 @@ public class UDP : MonoBehaviour
     bool isRunning = true;
     public GameObject alert_tab;
     public Transform parent;
+    public GameObject cctv;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class UDP : MonoBehaviour
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         //receiveThread.IsBackground = true;
         receiveThread.Start();
-        GameObject alert_box = Instantiate(alert_tab, new Vector3(2410, -100, 0), Quaternion.identity, parent);
+        //GameObject alert_box = Instantiate(alert_tab, new Vector3(2410, -100, 0), Quaternion.identity, parent);
         //alert_box.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
     }
 
@@ -45,11 +46,13 @@ public class UDP : MonoBehaviour
                 Debug.Log("Received data: " + message);
                 MainThreadDispatcher.ExecuteOnMainThread(() =>
                 {
-                    GameObject alert_box = Instantiate(alert_tab,new Vector3(1120, 100,0),Quaternion.identity, parent);
-                    alert_box.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+                    GameObject alert_box = Instantiate(alert_tab, new Vector3(2410, -100, 0), Quaternion.identity, parent);
+                    string tmp = message + "cctv has detected human";
+                    alert_box.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tmp;
                     alert_box.GetComponent<Button>().onClick.AddListener(() => {
                         Debug.Log("Å¬¸¯µÊ");
-                        StartCoroutine(gameObject.GetComponent<CCTV_Control>().cctv_change(2));
+                        Debug.Log(int.Parse(message));
+                        StartCoroutine(cctv.GetComponent<CCTV_Control>().cctv_change_tmp(int.Parse(message)));
                         Destroy(alert_box,.5f);
                         });
                 });

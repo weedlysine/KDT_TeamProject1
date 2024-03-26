@@ -13,6 +13,7 @@ public class DayTimeController : MonoBehaviour
     public Transform sunAltitude;
     public Light sun;
     public TextMeshProUGUI dateText;
+    public TextMeshProUGUI Timetext;
     public Slider slider;
 
     private SunData sunData;
@@ -20,8 +21,10 @@ public class DayTimeController : MonoBehaviour
 
     void Start()
     {
+        Timetext.text = DateTime.Now.ToString("HH:mm:ss");
+        Debug.Log(float.Parse(DateTime.Now.ToString("HH")));
         // 슬라이더의 기본값은 0.5
-        slider.value = 12f;
+        slider.value = float.Parse(DateTime.Now.ToString("HH"));
         // 슬라이더 값 변경 이벤트에 메서드 연결
         slider.onValueChanged.AddListener(OnSliderValueChanged);
         // 초기 데이터 로드 및 태양 위치 업데이트
@@ -66,7 +69,8 @@ public class DayTimeController : MonoBehaviour
         // 남중고도일 때의 태양 표현
         rotateSunAndPanel(12f);
         // 슬라이더의 기본값은 0.5
-        slider.value = 12f;
+        //slider.value = 12f;
+        dateText.text = "2024-3-26";
     }
 
     // 태양과 태양광 패널 회전

@@ -29,4 +29,9 @@ public class Alert_Created : MonoBehaviour
         // 최종 위치 보정
         transform.position = targetPosition;
     }
+
+    public void detroy_button()
+    {
+        Destroy(this, 0.3f);
+    }
 }

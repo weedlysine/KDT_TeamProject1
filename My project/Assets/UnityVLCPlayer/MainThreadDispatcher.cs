@@ -15,7 +15,11 @@ public class MainThreadDispatcher : MonoBehaviour
     public static void ExecuteOnMainThread(System.Action action)
     {
         if (instance != null)
+        {
             instance.actionQueue.Enqueue(action);
+            Debug.Log("여긴가???");
+        }
+            
     }
 
     // 큐에 있는 액션을 순차적으로 실행하는 함수
@@ -24,6 +28,7 @@ public class MainThreadDispatcher : MonoBehaviour
         while (actionQueue.Count > 0)
         {
             actionQueue.Dequeue().Invoke();
+            Debug.Log("여긴냐고?????");
         }
     }
 
